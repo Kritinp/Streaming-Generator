@@ -1,6 +1,10 @@
+import os
 import random
+import threading
 import time
 import csv
+import matplotlib.pyplot as plt
+
 
 def generate_stream_data(throughput_per_second, duration,file_lock, window_duration):
 
@@ -19,7 +23,7 @@ def generate_stream_data(throughput_per_second, duration,file_lock, window_durat
         loop_start = time.time()
         for i in range(throughput_per_second):
 
-            if time.time() - loop_start > 0.5:
+            if time.time() - loop_start > 1:
                 print(f'Bottlenecked!!')
                 break
 
@@ -72,4 +76,20 @@ def generate_stream_data(throughput_per_second, duration,file_lock, window_durat
     return [timestamps, event_counts, avg_throughputs]
 
 if __name__ == "__main__":
-    generate_stream_data(throughput_per_second=900000, duration=5)
+    if not os.path.exists("data"):
+        os.makedirs("data")
+    file_lock = threading.Lock()    
+    window_duration = 10
+    driver_duration = 100
+    gen_throughput = 1000000
+    generator_result = generate_stream_data(gen_throughput, driver_duration, file_lock, window_duration)
+    plt.figure(figsize=(10, 6))
+    print(generator_result[2])
+    plt.plot(generator_result[0], generator_result[2], label='Generator Througput')
+    plt.xlabel('Window')
+    plt.ylabel('Throughput')
+    plt.legend()
+    plt.title('Throughput for input of 10000')
+    plt.grid(True)
+    plt.savefig('plot.png')
+    plt.show()

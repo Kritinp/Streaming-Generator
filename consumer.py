@@ -46,7 +46,7 @@ def find_pattern_in_window(regex_pattern, window_duration, duration, gen):
                         elif timestamp >= window_end_time:
                             print(f'Matches Found: ({window_start_time}-{window_end_time}): {len(re.findall(regex_pattern,window_string))}')
                             window_string=""
-                            aha = time.time() - window_time + 1
+                            aha = time.time() - window_time + 2
                             avg_throughput = total_events/(aha)
                             if avg_throughput > gen : avg_throughput = gen - abs(avg_throughput-gen) 
                             print(f'{total_events} / {aha} = {avg_throughput}')
@@ -77,7 +77,7 @@ def find_pattern_in_window(regex_pattern, window_duration, duration, gen):
         time.sleep(1)
     
     print(f'Matches Found: ({window_start_time}-{window_end_time}): {len(re.findall(regex_pattern,window_string))}')
-    aha = time.time() - window_time + 1
+    aha = time.time() - window_time + 2
 
     avg_throughput = total_events/(aha)
     print(f'{total_events} / {aha} = {avg_throughput}')

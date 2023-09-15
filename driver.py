@@ -1,7 +1,6 @@
 import time
 import threading
 import consumer
-import badConsumer
 import generator
 import matplotlib.pyplot as plt
 import os
@@ -9,8 +8,8 @@ from matplotlib.ticker import MaxNLocator
 
 regex_pattern = r'AB'
 window_duration = 10
-driver_duration = 30
-gen_throughput = 100
+driver_duration = 200
+gen_throughput = 10000
 file_lock = threading.Lock()
 if not os.path.exists("data"):
     os.makedirs("data")
@@ -23,8 +22,8 @@ generator_result = None
 
 def run_consumer():
     global consumer_result
-    # consumer_result = consumer.find_pattern_in_window(regex_pattern, window_duration, driver_duration, gen_throughput)
-    consumer_result = badConsumer.find_pattern_in_window(regex_pattern, window_duration, driver_duration, 10, gen_throughput)
+    consumer_result = consumer.find_pattern_in_window(regex_pattern, window_duration, driver_duration, gen_throughput)
+    # consumer_result = badConsumer.find_pattern_in_window(regex_pattern, window_duration, driver_duration, 10, gen_throughput)
     consumer_event.set()  # Signal that the consumer thread is done
 
 def run_generator():
